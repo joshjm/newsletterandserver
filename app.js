@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get('/', function(req, res){
-    res.sendFile(__dirname + '/signup.html');
+    res.sendFile(__dirname + '/public/html/signup.html');
 });
 
 app.post("/", function(req, res){
@@ -44,7 +44,7 @@ app.post("/", function(req, res){
     const url = "https://us" + serverNumber + ".api.mailchimp.com/3.0/lists/"+listid
     const options = {
         method: "POST",
-        auth: "joshua1:20ff461046a76752c220b773d71ef6f2-us19"
+        auth: "joshua1:"+config.apiKey
     }
     const request = https.request(url, options, function(response){
 
@@ -73,7 +73,7 @@ app.listen(process.env.PORT || 3000, function(){
 
 
 // mailchimp api key
-//20ff461046a76752c220b773d71ef6f2-us19
+// 
 //mailchimp server id
 // 19
 // audience id

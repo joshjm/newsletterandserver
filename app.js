@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const https = require("https");
 var path = require('path');
+const config = require('./config.json'); //get apidata
 
 const app = express();
 
@@ -36,19 +37,21 @@ app.post("/", function(req, res){
     }
     var jsonData = JSON.stringify(data); // this is what we are sending to mail chimp
     // making our request
+    
+
     const serverNumber = "19"; 
     const listid = "58ea38128f";
     const url = "https://us" + serverNumber + ".api.mailchimp.com/3.0/lists/"+listid
     const options = {
         method: "POST",
-        auth: "joshua1:f8c1a3bc73d877060c044e98065f0000-us19"
+        auth: "joshua1:20ff461046a76752c220b773d71ef6f2-us19"
     }
     const request = https.request(url, options, function(response){
 
         if (response.statusCode == 200){
-            res.send("Success")
+            res.sendFile(__dirname + '/public/html/success.html');
         } else {
-            res.send("Error")
+            res.sendFile(__dirname+'/public/html/failure.html');
         }
 
         response.on("data", function(data){
@@ -59,13 +62,18 @@ app.post("/", function(req, res){
     request.end();
 });
 
-app.listen(3000, function(){
+app.post("/failure", function(req, res){
+    res.redirect("/");
+})
+
+app.listen(process.env.PORT || 3000, function(){
     console.log("server started on port 3000")
+    console.log(config.apiKey)
 });
 
 
 // mailchimp api key
-//f8c1a3bc73d877060c044e98065f0000-us19
+//20ff461046a76752c220b773d71ef6f2-us19
 //mailchimp server id
 // 19
 // audience id
